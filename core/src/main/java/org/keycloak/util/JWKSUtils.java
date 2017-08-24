@@ -35,7 +35,7 @@ public class JWKSUtils {
 
         for (JWK jwk : keySet.getKeys()) {
             JWKParser parser = JWKParser.create(jwk);
-            if (jwk.getPublicKeyUse().equals(requestedUse.asString()) && parser.isKeyTypeSupported(jwk.getKeyType())) {
+            if ((jwk.getPublicKeyUse() == null || jwk.getPublicKeyUse().equals(requestedUse.asString())) && parser.isKeyTypeSupported(jwk.getKeyType())) {
                 result.put(jwk.getKeyId(), parser.toPublicKey());
             }
         }

@@ -21,7 +21,7 @@ import org.jboss.logging.Logger;
 import org.keycloak.RSATokenVerifier;
 import org.keycloak.adapters.KeycloakDeployment;
 import org.keycloak.common.VerificationException;
-import org.keycloak.jose.jws.JWSInput;
+import org.keycloak.common.util.KeycloakUriBuilder;
 import org.keycloak.representations.AccessToken;
 
 import java.security.PublicKey;
@@ -51,7 +51,8 @@ public class AdapterRSATokenVerifier {
     }
 
     public static AccessToken verifyToken(String tokenString, KeycloakDeployment deployment, boolean checkActive, boolean checkTokenType) throws VerificationException {
-        RSATokenVerifier verifier = RSATokenVerifier.create(tokenString).realmUrl(deployment.getRealmInfoUrl()).checkActive(checkActive).checkTokenType(checkTokenType);
+        String infoUrl = KeycloakUriBuilder.fromUri(deployment.getAuthServerBaseUrl()).clone().build(deployment.getRealm()).toString()+"/";
+        RSATokenVerifier verifier = RSATokenVerifier.create(tokenString).realmUrl(infoUrl).checkActive(checkActive).checkTokenType(checkTokenType);
         PublicKey publicKey = getPublicKey(verifier.getHeader().getKeyId(), deployment);
         return verifier.publicKey(publicKey).verify().getToken();
     }

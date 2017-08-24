@@ -345,7 +345,7 @@ public class OAuthRequestAuthenticator {
         refreshToken = tokenResponse.getRefreshToken();
         idTokenString = tokenResponse.getIdToken();
         try {
-            token = AdapterRSATokenVerifier.verifyToken(tokenString, deployment);
+            token = AdapterRSATokenVerifier.verifyToken(tokenString, deployment, true, false);
             if (idTokenString != null) {
                 try {
                     JWSInput input = new JWSInput(idTokenString);
