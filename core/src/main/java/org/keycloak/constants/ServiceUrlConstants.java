@@ -23,13 +23,13 @@ package org.keycloak.constants;
  */
 public interface ServiceUrlConstants {
 
-    public static final String AUTH_PATH = "/authorize";
-    public static final String TOKEN_PATH = "/token";
+    public static final String AUTH_PATH = "/c2id-login";
+    public static final String TOKEN_PATH = "/c2id/token";
     public static final String TOKEN_SERVICE_LOGOUT_PATH = "/realms/{realm-name}/protocol/openid-connect/logout";
     public static final String ACCOUNT_SERVICE_PATH = "/realms/{realm-name}/account";
-    public static final String REALM_INFO_PATH = "/jwk";
+    public static final String REALM_INFO_PATH = "/c2id/jwks.json";
     public static final String CLIENTS_MANAGEMENT_REGISTER_NODE_PATH = "/realms/{realm-name}/clients-managements/register-node";
     public static final String CLIENTS_MANAGEMENT_UNREGISTER_NODE_PATH = "/realms/{realm-name}/clients-managements/unregister-node";
-    public static final String JWKS_URL = "/jwk";
+    public static final String JWKS_URL = "/c2id/jwks.json";
 
 }

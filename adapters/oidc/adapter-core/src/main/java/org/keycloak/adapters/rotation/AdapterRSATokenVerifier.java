@@ -51,7 +51,7 @@ public class AdapterRSATokenVerifier {
     }
 
     public static AccessToken verifyToken(String tokenString, KeycloakDeployment deployment, boolean checkActive, boolean checkTokenType) throws VerificationException {
-        String infoUrl = KeycloakUriBuilder.fromUri(deployment.getAuthServerBaseUrl()).clone().build(deployment.getRealm()).toString()+"/";
+        String infoUrl = KeycloakUriBuilder.fromUri(deployment.getAuthServerBaseUrl()).clone().build(deployment.getRealm()).toString()+"/c2id";
         RSATokenVerifier verifier = RSATokenVerifier.create(tokenString).realmUrl(infoUrl).checkActive(checkActive).checkTokenType(checkTokenType);
         PublicKey publicKey = getPublicKey(verifier.getHeader().getKeyId(), deployment);
         return verifier.publicKey(publicKey).verify().getToken();
