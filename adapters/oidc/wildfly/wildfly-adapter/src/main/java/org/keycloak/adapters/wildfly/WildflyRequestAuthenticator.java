@@ -17,11 +17,18 @@
 
 package org.keycloak.adapters.wildfly;
 
+import java.security.Principal;
+import java.security.acl.Group;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Set;
+
+import javax.security.auth.Subject;
+
 import io.undertow.security.api.SecurityContext;
 import io.undertow.server.HttpServerExchange;
-import net.infosim.common.services.UserMgmtFacadeFactory;
-import net.infosim.common.user.UserVO;
-import net.infosim.stablenet.web.user.qualifier.LoggedIn;
+
 import org.jboss.logging.Logger;
 import org.jboss.security.NestableGroup;
 import org.jboss.security.SecurityConstants;
@@ -34,26 +41,12 @@ import org.keycloak.adapters.spi.HttpFacade;
 import org.keycloak.adapters.undertow.KeycloakUndertowAccount;
 import org.keycloak.adapters.undertow.ServletRequestAuthenticator;
 
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
-import javax.security.auth.Subject;
-import java.security.Principal;
-import java.security.acl.Group;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Set;
-
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
  */
 public class WildflyRequestAuthenticator extends ServletRequestAuthenticator {
     protected static Logger log = Logger.getLogger(WildflyRequestAuthenticator.class);
-
-    @Inject
-    @LoggedIn
-    private transient Event<UserVO> userLoggedInEvent;
 
     public WildflyRequestAuthenticator(HttpFacade facade, KeycloakDeployment deployment, int sslRedirectPort,
                                        SecurityContext securityContext, HttpServerExchange exchange,
@@ -97,14 +90,6 @@ public class WildflyRequestAuthenticator extends ServletRequestAuthenticator {
         Principal userPrincipal = getPrincipal(subject);
         sc.getUtil().createSubjectInfo(userPrincipal, account, subject);
 
-        try
-        {
-            this.userLoggedInEvent.fire(UserMgmtFacadeFactory.getInstance().getLoggedInUser());
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 
     /**
